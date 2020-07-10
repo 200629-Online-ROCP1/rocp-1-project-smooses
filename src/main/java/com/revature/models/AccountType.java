@@ -5,7 +5,6 @@ public class AccountType {
 	  private String type; // not null, unique
 	public AccountType() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 	public AccountType(int typeId, String type) {
 		super();

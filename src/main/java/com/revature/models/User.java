@@ -1,5 +1,7 @@
 package com.revature.models;
 
+import com.revature.repo.RoleDAOImpl;
+
 public class User {
 	  private int userId; // primary key
 	  private String username; // not null, unique
@@ -11,12 +13,10 @@ public class User {
 	
 	  
 	public User() {
-		super();
 	}
 	
 	public User(int userId, String username, String password, String firstName, String lastName, String email,
 			Role role) {
-		super();
 		this.userId = userId;
 		this.username = username;
 		this.password = password;
@@ -26,6 +26,27 @@ public class User {
 		this.role = role;
 	}
 	
+	public User(int userId, String username, String password, String firstName, String lastName, String email, int roleId) {
+		this.userId = userId;
+		this.username = username;
+		this.password = password;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
+		RoleDAOImpl role = RoleDAOImpl.getInstance();
+		this.role = role.getRoleByID(roleId);
+	}
+	
+	public User(String username, String password, String firstName, String lastName, String email,
+			Role role) {
+		this.username = username;
+		this.password = password;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
+		this.role = role;
+	}
+
 	public int getUserId() {
 		return userId;
 	}
@@ -71,8 +92,8 @@ public class User {
 	
 	@Override
 	public String toString() {
-		return "User [userId=" + userId + ", username=" + username + ", password=" + password + ", firstName="
-				+ firstName + ", lastName=" + lastName + ", email=" + email + ", role=" + role + "]";
+		//return String.format("%1 %2$-30 [ID: %3$-10] [username: %4$-30] [email: %5$-50] %6", firstName, lastName, userId, username, email, role);
+		return firstName + " " + lastName + " [ID: " + userId + "] [username: " + username + "] [email: " + email +"] " + role;
 	}
 	@Override
 	public int hashCode() {

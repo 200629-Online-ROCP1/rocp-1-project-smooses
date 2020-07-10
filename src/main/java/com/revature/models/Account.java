@@ -5,11 +5,12 @@ public class Account {
 	  private double balance;  // not null
 	  private AccountStatus status;
 	  private AccountType type;
-	public Account() {
+	
+	 public Account() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
-	public Account(int accountId, double balance, AccountStatus status, AccountType type) {
+
+	 public Account(int accountId, double balance, AccountStatus status, AccountType type) {
 		super();
 		this.accountId = accountId;
 		this.balance = balance;

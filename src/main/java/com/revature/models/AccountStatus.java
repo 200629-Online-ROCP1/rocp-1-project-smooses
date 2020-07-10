@@ -3,10 +3,11 @@ package com.revature.models;
 public class AccountStatus {
 	  private int statusId; // primary key
 	  private String status; // not null, unique
+
 	public AccountStatus() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
+	
 	public AccountStatus(int statusId, String status) {
 		super();
 		this.statusId = statusId;

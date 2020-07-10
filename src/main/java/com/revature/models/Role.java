@@ -5,7 +5,6 @@ public class Role {
 	  private String role; // not null, unique
 	public Role() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 	public Role(int roleId, String role) {
 		super();
@@ -26,7 +25,7 @@ public class Role {
 	}
 	@Override
 	public String toString() {
-		return "Role [roleId=" + roleId + ", role=" + role + "]";
+		return "[role: " + role + "]";
 	}
 	@Override
 	public int hashCode() {
