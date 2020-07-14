@@ -1,5 +1,12 @@
 package com.revature.models;
 
+import java.text.NumberFormat;
+
+import com.revature.repo.AccountStatusDAO;
+import com.revature.repo.AccountStatusDAOImpl;
+import com.revature.repo.AccountTypeDAO;
+import com.revature.repo.AccountTypeDAOImpl;
+
 public class Account {
 	  private int accountId; // primary key
 	  private double balance;  // not null
@@ -7,14 +14,26 @@ public class Account {
 	  private AccountType type;
 	
 	 public Account() {
-		super();
 	}
 
 	 public Account(int accountId, double balance, AccountStatus status, AccountType type) {
-		super();
 		this.accountId = accountId;
 		this.balance = balance;
 		this.status = status;
+		this.type = type;
+	}
+	 public Account(int accountId, double balance, int statusId, int typeId) {
+		this.accountId = accountId;
+		this.balance = balance;
+		AccountStatusDAO asd = AccountStatusDAOImpl.getInstance();
+		this.status = asd.getAccountStatusByID(statusId);
+		AccountTypeDAO atd = AccountTypeDAOImpl.getInstance();
+		this.type = atd.getAccountTypeById(typeId);
+	 }
+	public Account(double balance, AccountType type) {
+		super();
+		this.balance = balance;
+		this.status = new AccountStatus("Pending");
 		this.type = type;
 	}
 	public int getAccountId() {
@@ -43,8 +62,8 @@ public class Account {
 	}
 	@Override
 	public String toString() {
-		return "Account [accountId=" + accountId + ", balance=" + balance + ", status=" + status + ", type=" + type
-				+ "]";
+		NumberFormat nf = NumberFormat.getCurrencyInstance();
+		return "[Account ID: " + accountId + "] " + type + " [Balance: " + nf.format(balance) + "] " + status;
 	}
 	@Override
 	public int hashCode() {

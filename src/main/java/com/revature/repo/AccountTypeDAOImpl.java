@@ -23,7 +23,7 @@ public class AccountTypeDAOImpl implements AccountTypeDAO{
 	@Override
 	public AccountType getAccountTypeById(int id) {
 		try(Connection conn = ConnectionUtil.getConnection()){
-			String sql = "SELECT * FROM account_type WHERE type_id = ?";			
+			String sql = "SELECT * FROM account_types WHERE type_id = ?";			
 			PreparedStatement statement = conn.prepareStatement(sql);
 			statement.setInt(1, id);
 			

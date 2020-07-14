@@ -33,7 +33,7 @@ CREATE TABLE users
 
 CREATE TABLE accounts
 (	account_id serial PRIMARY KEY,
-	balance money,
+	balance NUMERIC(10,2),
 	status integer REFERENCES account_status(status_id),
 	account_type integer REFERENCES account_types(type_id)
 );
@@ -41,9 +41,6 @@ CREATE TABLE accounts
 CREATE TABLE user_accounts
 (	account_id integer REFERENCES accounts(account_id),
 	user_id integer REFERENCES users(user_id),
-	primary_user boolean,
+	primary_user boolean DEFAULT TRUE,
 	PRIMARY KEY (account_id, user_id)
 );
-
-ALTER TABLE user_accounts ALTER COLUMN primary_user
-SET DEFAULT TRUE;

@@ -25,7 +25,7 @@ public class AccountType {
 	}
 	@Override
 	public String toString() {
-		return "AccountType [typeId=" + typeId + ", type=" + type + "]";
+		return "[Account Type: " + type + "]";
 	}
 	@Override
 	public int hashCode() {

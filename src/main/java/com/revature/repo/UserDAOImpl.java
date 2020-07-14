@@ -7,7 +7,10 @@ import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.revature.models.Account;
+import com.revature.models.AccountType;
 import com.revature.models.User;
+import com.revature.models.UserAccount;
 import com.revature.util.ConnectionUtil;
 
 public class UserDAOImpl implements UserDAO {
@@ -27,7 +30,7 @@ public class UserDAOImpl implements UserDAO {
 			
 		try(Connection conn = ConnectionUtil.getConnection()){
 			int index = 0;
-			String sql = "INSERT INTO users (username, password, first_name, last_name, email, user_role)" 
+			String sql = "INSERT INTO users (username, user_password, first_name, last_name, email, user_role)" 
 					+ "VALUES(?,?,?,?,?,?);";
 			
 			PreparedStatement statement = conn.prepareStatement(sql);
@@ -36,7 +39,7 @@ public class UserDAOImpl implements UserDAO {
 			statement.setString(++index, user.getFirstName());
 			statement.setString(++index, user.getLastName());
 			statement.setString(++index, user.getEmail());
-			statement.setObject(++index, user.getRole());
+			statement.setInt(++index, user.getRole().getRoleId());
 			
 			if(statement.execute()) {
 				return true;
@@ -51,9 +54,21 @@ public class UserDAOImpl implements UserDAO {
 
 	@Override
 	public boolean updateUser(User user) {
-		// TODO Auto-generated method stub
 		try(Connection conn = ConnectionUtil.getConnection()){
+			int index = 0;
+			String sql = "UPDATE users SET username=?, user_password=?, first_name=?, last_name=?, email=?, user_role=? WHERE user_id=?";
 			
+			PreparedStatement statement = conn.prepareStatement(sql);
+			statement.setString(++index, user.getUsername());
+			statement.setString(++index, user.getPassword());
+			statement.setString(++index, user.getFirstName());
+			statement.setString(++index, user.getLastName());
+			statement.setString(++index, user.getEmail());
+			statement.setInt(++index, user.getRole().getRoleId());
+			statement.setInt(++index, user.getUserId());
+			
+			int row = statement.executeUpdate();
+			System.out.println("Row(s) Updated: " + row);
 		}
 		catch (SQLException e) {
 			System.out.println(e);
@@ -104,6 +119,78 @@ public class UserDAOImpl implements UserDAO {
 			System.out.println(e);
 		}
 		return null;
+	}
+
+	@Override
+	public Account openNewAccount(double balance, AccountType type, User user) {
+		Account account = new Account(balance, type);
+
+		try(Connection conn = ConnectionUtil.getConnection()){
+			AccountDAO	accDAO = AccountDAOImpl.getInstance();
+			accDAO.insertAccount(account);
+			
+			String sql = "SELECT MAX(account_id) FROM accounts;";
+			PreparedStatement statement = conn.prepareStatement(sql);
+			
+			ResultSet result = statement.executeQuery();
+			int accountId = -1;
+			while(result.next()) {
+				accountId = result.getInt(1);
+			}
+			account.setAccountId(accountId);
+			
+			UserAccount ua = new UserAccount(account, user);
+			UserAccountDAO uaDAO = UserAccountDAOImpl.getInstance();
+			uaDAO.insertUserAccount(ua);
+			
+		}
+		catch (SQLException e) {
+			System.out.println(e);
+		}
+		return account;
+	}
+	
+	public int getNewestUserID() {
+		int userId = -1;
+		try(Connection conn = ConnectionUtil.getConnection()){
+					
+			String sql = "SELECT MAX(user_id) FROM users;";
+			PreparedStatement statement = conn.prepareStatement(sql);
+			
+			ResultSet result = statement.executeQuery();
+			while(result.next()) {
+				userId = result.getInt(1);
+			}
+		}
+		catch (SQLException e) {
+			System.out.println(e);
+		}
+		return userId;
+	}
+
+	@Override
+	public Set<Account> getAllAccounts(User user) {
+		Set<Account> allUserAccounts = new HashSet<Account>();
+		UserAccountDAO uaDAO = UserAccountDAOImpl.getInstance();
+		allUserAccounts = uaDAO.getAllAccounts(user);
+		return allUserAccounts;
+	}
+
+	@Override
+	public boolean deleteUser(User user) {
+		try(Connection conn = ConnectionUtil.getConnection()){
+			String sql = "DELETE FROM users WHERE user_id=?";
+		
+			PreparedStatement statement = conn.prepareStatement(sql);
+			statement.setInt(1, user.getUserId());
+		
+			int row = statement.executeUpdate();
+			System.out.println("Row(s) Deleted: " + row);
+		}
+		catch (SQLException e) {
+			System.out.println(e);
+		}
+	return false;
 	}
 	
 
