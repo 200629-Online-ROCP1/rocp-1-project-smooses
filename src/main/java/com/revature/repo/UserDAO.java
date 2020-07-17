@@ -12,6 +12,7 @@ public interface UserDAO {
 	public boolean updateUser(User user);
 	public boolean deleteUser(User user);
 	public User getUserById(int id);
+	public User getUserByUsername(String username);
 	public Set<User> getAllUsers();
 	public Account openNewAccount(double balance, AccountType type, User user);
 	public Set<Account> getAllAccounts(User user);

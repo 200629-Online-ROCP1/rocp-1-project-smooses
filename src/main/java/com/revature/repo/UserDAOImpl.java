@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -27,13 +28,13 @@ public class UserDAOImpl implements UserDAO {
 	
 	@Override
 	public boolean insertUser(User user) {
-			
+		int newUserID = -1;
 		try(Connection conn = ConnectionUtil.getConnection()){
 			int index = 0;
 			String sql = "INSERT INTO users (username, user_password, first_name, last_name, email, user_role)" 
 					+ "VALUES(?,?,?,?,?,?);";
 			
-			PreparedStatement statement = conn.prepareStatement(sql);
+			PreparedStatement statement = conn.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
 			statement.setString(++index, user.getUsername());
 			statement.setString(++index, user.getPassword());
 			statement.setString(++index, user.getFirstName());
@@ -41,13 +42,15 @@ public class UserDAOImpl implements UserDAO {
 			statement.setString(++index, user.getEmail());
 			statement.setInt(++index, user.getRole().getRoleId());
 			
+			//ResultSet rs = statement.getGeneratedKeys();
+			
 			if(statement.execute()) {
 				return true;
 			}
 			
 		}
 		catch (SQLException e) {
-			System.out.println(e);
+			e.getStackTrace();
 		}
 		return false;
 	}
@@ -98,6 +101,28 @@ public class UserDAOImpl implements UserDAO {
 		return null;
 	}
 
+	@Override
+	public User getUserByUsername(String username) {
+		
+		try(Connection conn = ConnectionUtil.getConnection()){
+			String sql = "SELECT * FROM users WHERE username = ?";			
+			PreparedStatement statement = conn.prepareStatement(sql);
+			statement.setString(1, username);
+			
+			ResultSet result = statement.executeQuery();
+			if(result.next()) {
+				return new User(result.getInt("user_id"), result.getString("username"),
+						result.getString("user_password"), result.getString("first_name"), 
+						result.getString("last_name"), result.getString("email"), result.getInt("user_role"));
+			}
+			
+		}
+		catch (SQLException e) {
+			System.out.println(e);
+		}
+		return null;
+	}
+	
 	@Override
 	public Set<User> getAllUsers() {
 		try(Connection conn = ConnectionUtil.getConnection()){
