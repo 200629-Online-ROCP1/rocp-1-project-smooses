@@ -28,13 +28,12 @@ public class UserDAOImpl implements UserDAO {
 	
 	@Override
 	public boolean insertUser(User user) {
-		int newUserID = -1;
 		try(Connection conn = ConnectionUtil.getConnection()){
 			int index = 0;
 			String sql = "INSERT INTO users (username, user_password, first_name, last_name, email, user_role)" 
 					+ "VALUES(?,?,?,?,?,?);";
 			
-			PreparedStatement statement = conn.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
+			PreparedStatement statement = conn.prepareStatement(sql); //,Statement.RETURN_GENERATED_KEYS
 			statement.setString(++index, user.getUsername());
 			statement.setString(++index, user.getPassword());
 			statement.setString(++index, user.getFirstName());
@@ -44,10 +43,8 @@ public class UserDAOImpl implements UserDAO {
 			
 			//ResultSet rs = statement.getGeneratedKeys();
 			
-			if(statement.execute()) {
-				return true;
-			}
-			
+			statement.execute();
+			return true;			
 		}
 		catch (SQLException e) {
 			e.getStackTrace();
@@ -72,6 +69,9 @@ public class UserDAOImpl implements UserDAO {
 			
 			int row = statement.executeUpdate();
 			System.out.println("Row(s) Updated: " + row);
+			if (row > 0) {
+				return true;
+			}
 		}
 		catch (SQLException e) {
 			System.out.println(e);
@@ -195,10 +195,28 @@ public class UserDAOImpl implements UserDAO {
 
 	@Override
 	public Set<Account> getAllAccounts(User user) {
-		Set<Account> allUserAccounts = new HashSet<Account>();
-		UserAccountDAO uaDAO = UserAccountDAOImpl.getInstance();
-		allUserAccounts = uaDAO.getAllAccounts(user);
-		return allUserAccounts;
+		try(Connection conn = ConnectionUtil.getConnection()){
+			String sql = "SELECT accounts.account_id, accounts.balance, accounts.account_type, accounts.status FROM user_accounts " + 
+					"JOIN users ON user_accounts.user_id = users.user_id " + 
+					"JOIN accounts ON user_accounts.account_id = accounts.account_id " + 
+					"WHERE users.user_id = ?;";
+			PreparedStatement statement = conn.prepareStatement(sql);
+			statement.setInt(1, user.getUserId());
+			
+			Set<Account> set = new HashSet<>();
+			ResultSet result = statement.executeQuery();
+			while(result.next()) {
+				set.add(new Account(result.getInt("account_id"), result.getDouble("balance"),
+						result.getInt("status"), result.getInt("account_type")));
+			}
+			
+			return set;
+			
+		}
+		catch (SQLException e) {
+			System.out.println(e);
+		}
+		return null;
 	}
 
 	@Override

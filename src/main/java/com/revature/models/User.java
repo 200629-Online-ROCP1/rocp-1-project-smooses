@@ -103,7 +103,7 @@ public class User {
 	@Override
 	public String toString() {
 		//return String.format("%1 %2$-30 [ID: %3$-10] [username: %4$-30] [email: %5$-50] %6", firstName, lastName, userId, username, email, role);
-		return firstName + " " + lastName + " [ID: " + userId + "] [username: " + username + "] [email: " + email +"] " + role;
+		return firstName + " " + lastName + " [ID: " + userId + "] [username: " + username + "] [email: " + email +"] [role: " + role + "]";
 	}
 	@Override
 	public int hashCode() {
