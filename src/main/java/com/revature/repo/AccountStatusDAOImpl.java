@@ -38,5 +38,23 @@ public class AccountStatusDAOImpl implements AccountStatusDAO {
 		return null;
 	}
 	
+	@Override
+	public int getAccountStatusID(String status) {
+		try(Connection conn = ConnectionUtil.getConnection()){
+			String sql = "SELECT * FROM account_status WHERE account_status = ?";			
+			PreparedStatement statement = conn.prepareStatement(sql);
+			statement.setString(1, status);
+			
+			ResultSet result = statement.executeQuery();
+			if(result.next()) {
+				return result.getInt("status_id");
+			}	
+		}
+		catch (SQLException e) {
+			System.out.println(e);
+		}
+		return -1;
+	}
+	
 
 }

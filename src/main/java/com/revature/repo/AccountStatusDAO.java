@@ -5,5 +5,6 @@ import com.revature.models.AccountStatus;
 public interface AccountStatusDAO {
 	
 	public AccountStatus getAccountStatusByID(int id);
+	public int getAccountStatusID(String status);
 
 }

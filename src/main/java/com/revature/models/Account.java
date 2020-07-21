@@ -54,6 +54,14 @@ public class Account {
 	public void setStatus(AccountStatus status) {
 		this.status = status;
 	}
+	public boolean isActive() {
+		AccountStatus open = new AccountStatus(2);
+		if (!status.equals(open)) {
+			return false;
+		} else {
+			return true;
+		}
+	}
 	public AccountType getType() {
 		return type;
 	}

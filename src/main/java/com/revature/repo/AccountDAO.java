@@ -14,6 +14,7 @@ public interface AccountDAO {
 	public boolean deposit(Account account, double amt);
 	public boolean withdraw(Account account, double amt);
 	public Account getAccountById(int id);
+	public Set<Account> findAccountsByStatus(AccountStatus status);
 	public Set<Account> listAllAccounts();
 	public boolean approveAccount(Account account);
 	public boolean denyAccount(Account account);
@@ -22,5 +23,6 @@ public interface AccountDAO {
 	public AccountType getAccountType(Account account);
 	public User getAccountOwner(Account account);
 	public Set<User> getAccountOwners(Account account);
+	public int getNewestAccountID();
 	
 }

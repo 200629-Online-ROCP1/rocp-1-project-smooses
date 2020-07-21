@@ -26,7 +26,8 @@ public class UserController {
 		User currentUser = (User) ses.getAttribute("user");
 		if (portions.length == 2) {
 			int id = Integer.parseInt(portions[1]);
-			if (currentUser.getRole().equals(adminRole) || currentUser.getRole().equals(empRole) || currentUser.getUserId() == id) {
+			if (currentUser.getRole().equals(adminRole) || currentUser.getRole().equals(empRole)
+					|| currentUser.getUserId() == id) {
 				User user = us.getUserById(id);
 				res.setStatus(200);
 				String json = om.writeValueAsString(user);
@@ -56,7 +57,7 @@ public class UserController {
 			if (!u.getRole().equals(us.getUserById(id).getRole()) && !currentUser.getRole().equals(adminRole)) {
 				res.setStatus(401);
 				res.getWriter().println("You do not have permission to modify user roles.");
-			}else if (currentUser.getRole().equals(adminRole) || currentUser.getUserId() == id) {
+			} else if (currentUser.getRole().equals(adminRole) || currentUser.getUserId() == id) {
 				if (us.updateUser(req, res, u)) {
 					res.setStatus(202);
 					res.getWriter().println("User " + u.getUserId() + " updated: \n");
@@ -71,7 +72,7 @@ public class UserController {
 				res.getWriter().println("You do not have permission to modify that information.");
 			}
 		} else {
-			if (currentUser.getRole().equals(adminRole)) {
+			if (currentUser.getRole().equals(adminRole) && u.getUserId() == 0) {
 				if (us.addUser(u)) {
 					u = us.getUserByUsername(u.getUsername());
 					res.setStatus(201);
@@ -80,16 +81,25 @@ public class UserController {
 					res.getWriter().println(json);
 				} else {
 					res.setStatus(400);
-					res.getWriter().println("Unable to add new user.\n" 
-							+ "Check that username or email do not already exist.");
+					res.getWriter().println("Unable to register user.\nCheck that username or email does not already exist.");
+				}
+			} else if (currentUser.getRole().equals(adminRole) || currentUser.equals(u)) {
+				if (us.updateUser(req, res, u)) {
+					res.setStatus(202);
+					res.getWriter().println("User " + u.getUserId() + " updated: \n");
+					String json = om.writeValueAsString(u);
+					res.getWriter().println(json);
+				} else {
+					res.setStatus(400);
+					res.getWriter().println("Unable to update user.");
 				}
 			} else {
 				res.setStatus(401);
-				res.getWriter().println("You do not have permission to register a new user.");
+				res.getWriter().println("You do not have permission to do that.");
 			}
 		}
 	}
-	
+
 	private static User getUserFromBody(HttpServletRequest req) throws IOException {
 		BufferedReader reader = req.getReader();
 		StringBuilder s = new StringBuilder();

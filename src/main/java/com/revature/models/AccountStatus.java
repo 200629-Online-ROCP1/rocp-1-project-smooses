@@ -1,5 +1,8 @@
 package com.revature.models;
 
+import com.revature.repo.AccountStatusDAO;
+import com.revature.repo.AccountStatusDAOImpl;
+
 public class AccountStatus {
 	  private int statusId; // primary key
 	  private String status; // not null, unique
@@ -13,6 +16,13 @@ public class AccountStatus {
 	}
 	public AccountStatus(String status) {
 		this.status = status;
+		AccountStatusDAO dao = AccountStatusDAOImpl.getInstance();
+		statusId = dao.getAccountStatusID(status);
+	}
+	public AccountStatus(int statusId) {
+		this.statusId = statusId;
+		AccountStatusDAO dao = AccountStatusDAOImpl.getInstance();
+		this.status = dao.getAccountStatusByID(statusId).getStatus();
 	}
 
 	public int getStatusId() {

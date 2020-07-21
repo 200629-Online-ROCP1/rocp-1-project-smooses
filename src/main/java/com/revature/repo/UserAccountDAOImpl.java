@@ -37,10 +37,8 @@ public class UserAccountDAOImpl implements UserAccountDAO{
 			statement.setInt(++index, ua.getUser().getUserId());
 			statement.setBoolean(++index, ua.isPrimaryUser());
 						
-			if(statement.execute()) {
-				return true;
-			}
-			
+			statement.execute();
+			return true;
 		}
 		catch (SQLException e) {
 			System.out.println(e);
