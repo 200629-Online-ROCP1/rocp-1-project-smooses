@@ -15,7 +15,7 @@ public class ConnectionUtil {
 			e.printStackTrace();
 		}
 		
-		String url = "jdbc:postgresql://localhost:5432/bank";
+		String url = "jdbc:postgresql://localhost:5433/bank";
 		String username = "postgres";
 		String password = "revature"; 
 		

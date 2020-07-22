@@ -11,6 +11,7 @@ import javax.servlet.http.HttpSession;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.controllers.AccountController;
 import com.revature.controllers.LoginController;
+import com.revature.controllers.RegistrationController;
 import com.revature.controllers.UserController;
 
 public class MasterServlet extends HttpServlet {
@@ -19,7 +20,7 @@ public class MasterServlet extends HttpServlet {
 	public static final LoginController lc = new LoginController();
 	public static final UserController uc = new UserController();
 	public static final AccountController ac = new AccountController();
-
+	public static final RegistrationController rc = new RegistrationController();
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 
@@ -36,7 +37,6 @@ public class MasterServlet extends HttpServlet {
 			switch (portions[0]) {
 			case "users":
 				if (ses != null && ((Boolean) ses.getAttribute("loggedIn"))) {
-
 					if (req.getMethod().equals("GET")) {
 						uc.handleGet(req, res, portions);	
 					} else if (req.getMethod().equals("DELETE")) {
@@ -50,11 +50,11 @@ public class MasterServlet extends HttpServlet {
 				}
 				break;
 			case "register":
-				if (ses != null && ((Boolean) ses.getAttribute("loggedIn"))) {
-					uc.handlePost(req, res, portions);
+				if (ses == null) {
+						rc.handlePost(req, res, portions);
 				} else {
-					res.setStatus(401);
-					res.getWriter().println("You must be logged in to do that!");
+					res.setStatus(400);
+					res.getWriter().println("You are already logged in!");
 				}
 				break;
 			case "accounts":

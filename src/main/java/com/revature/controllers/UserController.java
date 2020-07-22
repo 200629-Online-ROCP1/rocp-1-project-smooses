@@ -51,27 +51,40 @@ public class UserController {
 	public void handlePost(HttpServletRequest req, HttpServletResponse res, String[] portions) throws IOException {
 		HttpSession ses = req.getSession(false);
 		User currentUser = (User) ses.getAttribute("user");
-		User u = getUserFromBody(req);
 		if (portions.length == 2) {
 			int id = Integer.parseInt(portions[1]);
-			if (!u.getRole().equals(us.getUserById(id).getRole()) && !currentUser.getRole().equals(adminRole)) {
-				res.setStatus(401);
-				res.getWriter().println("You do not have permission to modify user roles.");
-			} else if (currentUser.getRole().equals(adminRole) || currentUser.getUserId() == id) {
-				if (us.updateUser(req, res, u)) {
-					res.setStatus(202);
-					res.getWriter().println("User " + u.getUserId() + " updated: \n");
-					String json = om.writeValueAsString(u);
-					res.getWriter().println(json);
+			User u = us.getUserById(id);
+			if (currentUser.getRole().equals(adminRole) || currentUser.getUserId() == id) {
+				if (req.getParameter("action") != null) {
+					System.out.println("Performing action: " + req.getParameter("action"));
+					switch (req.getParameter("action")) {
+					case "upgrade":
+						System.out.println("Attempting to upgrade user account");
+						if (us.upgradeToPremium(u)) {
+							System.out.println("Account upgraded.");
+							u = us.getUserById(u.getUserId());
+							res.setStatus(202);
+							res.getWriter().println("User " + u.getUserId() + " upgraded: \n");
+							String json = om.writeValueAsString(u);
+							res.getWriter().println(json);
+						} else {
+							System.out.println("Upgrade Failed");
+							res.setStatus(400);
+							res.getWriter().println(
+									"Unable to upgrade user.\nPlease ensure user account contains sufficient funds.");
+						}
+						break;
+					}
 				} else {
 					res.setStatus(400);
-					res.getWriter().println("User not updated, please double check correct information.");
+					res.getWriter().println("Invalid action.");
 				}
 			} else {
 				res.setStatus(401);
 				res.getWriter().println("You do not have permission to modify that information.");
 			}
 		} else {
+			User u = getUserFromBody(req);
 			if (currentUser.getRole().equals(adminRole) && u.getUserId() == 0) {
 				if (us.addUser(u)) {
 					u = us.getUserByUsername(u.getUsername());
@@ -84,6 +97,10 @@ public class UserController {
 					res.getWriter()
 							.println("Unable to register user.\nCheck that username or email does not already exist.");
 				}
+			} else if (!u.getRole().equals(us.getUserById(u.getUserId()).getRole())
+					&& !currentUser.getRole().equals(adminRole)) {
+				res.setStatus(401);
+				res.getWriter().println("You do not have permission to modify user roles.");
 			} else if (currentUser.getRole().equals(adminRole) || currentUser.equals(u)) {
 				if (us.updateUser(req, res, u)) {
 					res.setStatus(202);
@@ -99,6 +116,7 @@ public class UserController {
 				res.getWriter().println("You do not have permission to do that.");
 			}
 		}
+
 	}
 
 	public void handleDelete(HttpServletRequest req, HttpServletResponse res, String[] portions) throws IOException {

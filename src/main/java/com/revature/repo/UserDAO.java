@@ -17,4 +17,5 @@ public interface UserDAO {
 	public Account openNewAccount(double balance, AccountType type, User user);
 	public Set<Account> getAllAccounts(User user);
 	public int getNewestUserID();
+	public boolean upgradeToPremium(User user);
 }

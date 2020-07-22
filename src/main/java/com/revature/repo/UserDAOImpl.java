@@ -10,6 +10,7 @@ import java.util.Set;
 
 import com.revature.models.Account;
 import com.revature.models.AccountType;
+import com.revature.models.Role;
 import com.revature.models.User;
 import com.revature.models.UserAccount;
 import com.revature.util.ConnectionUtil;
@@ -237,6 +238,16 @@ public class UserDAOImpl implements UserDAO {
 			System.out.println(e);
 		}
 	return false;
+	}
+
+	@Override
+	public boolean upgradeToPremium(User user) {
+		Role premium = new Role(4, "Premium");
+		user.setRole(premium);
+		if (updateUser(user)) {
+			return true;
+		}
+		return false;
 	}
 	
 
