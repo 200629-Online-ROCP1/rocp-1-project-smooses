@@ -34,6 +34,10 @@ public class AccountService {
 		return uadao.getAllAccounts(user);
 	}
 	
+	public Set<User> getAccountOwners(Account account) {
+		return dao.getAccountOwners(account);
+	}
+	
 	public boolean isAccountOwner(Account account, User user) {
 		boolean isOwner = false;
 		Set<User> owners = dao.getAccountOwners(account);
@@ -43,6 +47,15 @@ public class AccountService {
 			}
 		}
 		return isOwner;
+	}
+	
+	public boolean isPrimaryOwner(Account account, User user) {
+		return uadao.isPrimaryUser(account, user);
+	}
+	
+	public boolean addNewAccountOwner(Account account, User user) {
+		UserAccount ua = new UserAccount(account, user, false);
+		return uadao.insertUserAccount(ua);
 	}
 	
 	public boolean openNewAccount(Account account, User user) {
@@ -88,7 +101,18 @@ public class AccountService {
 		}else {
 			return false;
 		}
-		
-
+	}
+	
+	public boolean accrueInterest(int months) {
+		for (int i = 0; i < months; i++) {
+			if(!dao.accrueInterest()) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	public boolean deleteAccount(Account account) {
+		return dao.deleteAccount(account);
 	}
 }

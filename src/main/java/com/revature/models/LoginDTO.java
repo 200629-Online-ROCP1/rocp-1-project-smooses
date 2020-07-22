@@ -21,6 +21,9 @@ public class LoginDTO {
 	
 	public boolean validate() {
 		u = ud.getUserByUsername(username);
+		if (u == null) {
+			return false;
+		}
 		if (u.getPassword().equals(password)) {
 			return true;
 		}

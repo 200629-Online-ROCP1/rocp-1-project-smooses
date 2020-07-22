@@ -38,7 +38,9 @@ public class MasterServlet extends HttpServlet {
 				if (ses != null && ((Boolean) ses.getAttribute("loggedIn"))) {
 
 					if (req.getMethod().equals("GET")) {
-						uc.handleGet(req, res, portions);
+						uc.handleGet(req, res, portions);	
+					} else if (req.getMethod().equals("DELETE")) {
+						uc.handleDelete(req, res, portions);
 					} else {
 						uc.handlePost(req, res, portions);
 					}
@@ -62,11 +64,20 @@ public class MasterServlet extends HttpServlet {
 						ac.handleGet(req, res, portions);
 					} else if  (req.getMethod().equals("PUT")) {
 						ac.handlePut(req, res, portions);
-					}
-					else {
+					} else if (req.getMethod().equals("DELETE")) {
+						ac.handleDelete(req, res, portions);
+					} else {
 						ac.handlePost(req, res, portions);
 					}
 				} else {
+					res.setStatus(401);
+					res.getWriter().println("You must be logged in to do that!");
+				}
+				break;
+			case "passTime":
+				if (ses != null && ((Boolean) ses.getAttribute("loggedIn"))) {
+					ac.handleTime(req, res);
+				}else {
 					res.setStatus(401);
 					res.getWriter().println("You must be logged in to do that!");
 				}
@@ -92,6 +103,10 @@ public class MasterServlet extends HttpServlet {
 
 	@Override
 	protected void doPut(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+		doGet(req, res);
+	}
+	
+	protected void doDelete(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		doGet(req, res);
 	}
 }

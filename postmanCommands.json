@@ -1,0 +1,864 @@
+{
+	"info": {
+		"_postman_id": "5a5b69cb-9992-44b5-8882-b7cfae8feb58",
+		"name": "Banking Project Examples",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "POST login (admin)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"admin\",\r\n    \"password\": \"adminpassword\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/rocp-project/login/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"rocp-project",
+						"login",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST login (employee)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"employee\",\r\n    \"password\": \"employeepassword\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/rocp-project/login/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"rocp-project",
+						"login",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST login (user)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"username\",\r\n    \"password\": \"password\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/rocp-project/login/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"rocp-project",
+						"login",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST login (premium)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"vipuser\",\r\n    \"password\": \"vipassword\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/rocp-project/login/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"rocp-project",
+						"login",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET All Users",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "2e965c72-68ef-4142-a900-490ad2c3e482",
+						"exec": [
+							"var template = `\r",
+							"<table>\r",
+							"    <tr>\r",
+							"        <th>User ID</th>\r",
+							"        <th>username</th>\r",
+							"        <th>password</th>\r",
+							"        <th>First Name</th>\r",
+							"        <th>Last Name</th>\r",
+							"        <th>Email</th>\r",
+							"        <th>Role</th>\r",
+							"    </tr>\r",
+							"    {{#each response}}\r",
+							"    <tr>\r",
+							"        <td>{{userId}}</td>\r",
+							"        <td>{{username}}</td>\r",
+							"        <td>{{password}}</td>\r",
+							"        <td>{{firstName}}</td>\r",
+							"        <td>{{lastName}}</td>\r",
+							"        <td>{{email}}</td>\r",
+							"        <td>{{role.role}}</td>\r",
+							"    </tr>\r",
+							"    {{/each}}\r",
+							"</table>\r",
+							"`;\r",
+							"\r",
+							"pm.visualizer.set(template, {\r",
+							"    response: pm.response.json()\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/rocp-project/users/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"rocp-project",
+						"users",
+						""
+					]
+				},
+				"description": "Show All Users"
+			},
+			"response": []
+		},
+		{
+			"name": "GET Single User",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/rocp-project/users/3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"rocp-project",
+						"users",
+						"3"
+					]
+				},
+				"description": "Show user by id (3)"
+			},
+			"response": []
+		},
+		{
+			"name": "POST New User",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"userId\": 0,\r\n    \"username\": \"postuser\",\r\n    \"password\": \"postpassword\",\r\n    \"firstName\": \"Piper\",\r\n    \"lastName\": \"Post\",\r\n    \"email\": \"piper.post@gmail.com\",\r\n    \"role\": {\r\n        \"roleId\": 3,\r\n        \"role\": \"Standard\"\r\n    }\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/rocp-project/users/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"rocp-project",
+						"users",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST Register",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"userId\": 0,\r\n    \"username\": \"registeruser\",\r\n    \"password\": \"registerpassword\",\r\n    \"firstName\": \"Reggie\",\r\n    \"lastName\": \"Star\",\r\n    \"email\": \"starry@aol.com\",\r\n    \"role\": {\r\n        \"roleId\": 4,\r\n        \"role\": \"Premium\"\r\n    }\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/rocp-project/register/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"rocp-project",
+						"register",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT Update User",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"userId\": 8,\r\n    \"username\": \"updatedUser\",\r\n    \"password\": \"updatedPassword\",\r\n    \"firstName\": \"Updated\",\r\n    \"lastName\": \"User\",\r\n    \"email\": \"updatedemail@gmail.com\",\r\n    \"role\": {\r\n        \"roleId\": 4,\r\n        \"role\": \"Premium\"\r\n    }\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/rocp-project/users/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"rocp-project",
+						"users",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET All Accounts",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "b46d3b1a-a939-4d05-ad3a-0fab1dc1010b",
+						"exec": [
+							"var template = `\r",
+							"<table>\r",
+							"    <tr>\r",
+							"        <th>AccountID</th>\r",
+							"        <th>Balance</th>\r",
+							"        <th>Status</th>\r",
+							"        <th>Type</th>\r",
+							"    </tr>\r",
+							"    {{#each response}}\r",
+							"    <tr>\r",
+							"        <td>{{accountId}}</td>\r",
+							"        <td>{{balance}}</td>\r",
+							"        <td>{{status.status}}</td>\r",
+							"        <td>{{type.type}}</td>\r",
+							"    </tr>\r",
+							"    {{/each}}\r",
+							"</table>\r",
+							"`;\r",
+							"\r",
+							"pm.visualizer.set(template, {\r",
+							"    response: pm.response.json()\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/rocp-project/accounts",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"rocp-project",
+						"accounts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET Single Account",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/rocp-project/accounts/3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"rocp-project",
+						"accounts",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET Accounts by Status (Open)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "21596096-8f89-47de-b773-174d3de78963",
+						"exec": [
+							"var template = `\r",
+							"<table>\r",
+							"    <tr>\r",
+							"        <th>AccountID</th>\r",
+							"        <th>Balance</th>\r",
+							"        <th>Status</th>\r",
+							"        <th>Type</th>\r",
+							"    </tr>\r",
+							"    {{#each response}}\r",
+							"    <tr>\r",
+							"        <td>{{accountId}}</td>\r",
+							"        <td>{{balance}}</td>\r",
+							"        <td>{{status.status}}</td>\r",
+							"        <td>{{type.type}}</td>\r",
+							"    </tr>\r",
+							"    {{/each}}\r",
+							"</table>\r",
+							"`;\r",
+							"\r",
+							"pm.visualizer.set(template, {\r",
+							"    response: pm.response.json()\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/rocp-project/accounts/status/2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"rocp-project",
+						"accounts",
+						"status",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET Accounts by Owner",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "8aaaacb9-0769-4b14-b2f8-330c59a6764f",
+						"exec": [
+							"var template = `\r",
+							"<table>\r",
+							"    <tr>\r",
+							"        <th>AccountID</th>\r",
+							"        <th>Balance</th>\r",
+							"        <th>Status</th>\r",
+							"        <th>Type</th>\r",
+							"    </tr>\r",
+							"    {{#each response}}\r",
+							"    <tr>\r",
+							"        <td>{{accountId}}</td>\r",
+							"        <td>{{balance}}</td>\r",
+							"        <td>{{status.status}}</td>\r",
+							"        <td>{{type.type}}</td>\r",
+							"    </tr>\r",
+							"    {{/each}}\r",
+							"</table>\r",
+							"`;\r",
+							"\r",
+							"pm.visualizer.set(template, {\r",
+							"    response: pm.response.json()\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/rocp-project/accounts/owner/3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"rocp-project",
+						"accounts",
+						"owner",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST Withdrawl",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"sourceAccountId\": 5,\r\n  \"amount\": 100.00\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/rocp-project/accounts/withdraw",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"rocp-project",
+						"accounts",
+						"withdraw"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST Deposit",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"sourceAccountId\": 5,\r\n  \"amount\": 100.00\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/rocp-project/accounts/deposit",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"rocp-project",
+						"accounts",
+						"deposit"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST Transfer",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"sourceAccountId\": 5,\r\n  \"targetAccountId\": 6,\r\n  \"amount\": 100.00\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/rocp-project/accounts/transfer",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"rocp-project",
+						"accounts",
+						"transfer"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST New Account",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"user\": {\r\n        \"userId\": 5,\r\n        \"username\": \"anotheruser\",\r\n        \"password\": \"1PASS2word3\",\r\n        \"firstName\": \"Ann\",\r\n        \"lastName\": \"Other\",\r\n        \"email\": \"ann.other@yahoo.com\",\r\n        \"role\": {\r\n            \"roleId\": 3,\r\n            \"role\": \"Standard\"\r\n        }\r\n    },\r\n    \"account\": {\r\n        \"accountId\": 0,\r\n        \"balance\": 250.0,\r\n        \"status\": {\r\n            \"statusId\": 1,\r\n            \"status\": \"Pending\"\r\n        },\r\n        \"type\": {\r\n            \"typeId\": 1,\r\n            \"type\": \"Checking\"\r\n        }\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/rocp-project/accounts/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"rocp-project",
+						"accounts",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT Approve Account",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/rocp-project/accounts/10?action=approve",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"rocp-project",
+						"accounts",
+						"10"
+					],
+					"query": [
+						{
+							"key": "action",
+							"value": "approve"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT Deny Account",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/rocp-project/accounts/8?action=deny",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"rocp-project",
+						"accounts",
+						"8"
+					],
+					"query": [
+						{
+							"key": "action",
+							"value": "deny"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT Close Account",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/rocp-project/accounts/9?action=close",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"rocp-project",
+						"accounts",
+						"9"
+					],
+					"query": [
+						{
+							"key": "action",
+							"value": "close"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT Update Account",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"accountId\": 10,\r\n    \"balance\": 500.0,\r\n    \"status\": {\r\n        \"statusId\": 2,\r\n        \"status\": \"Open\"\r\n    },\r\n    \"type\": {\r\n        \"typeId\": 2,\r\n        \"type\": \"Savings\"\r\n    }\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/rocp-project/accounts/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"rocp-project",
+						"accounts",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST logout",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/rocp-project/logout/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"rocp-project",
+						"logout",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST Pass Time",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"numOfMonths\": 6\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/rocp-project/passTime",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"rocp-project",
+						"passTime"
+					]
+				},
+				"description": "Accrues interest in savings accounts"
+			},
+			"response": []
+		},
+		{
+			"name": "POST Add Joint Account Owner",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "8aaaacb9-0769-4b14-b2f8-330c59a6764f",
+						"exec": [
+							"var template = `\r",
+							"<table>\r",
+							"    <tr>\r",
+							"        <th>AccountID</th>\r",
+							"        <th>Balance</th>\r",
+							"        <th>Status</th>\r",
+							"        <th>Type</th>\r",
+							"    </tr>\r",
+							"    {{#each response}}\r",
+							"    <tr>\r",
+							"        <td>{{accountId}}</td>\r",
+							"        <td>{{balance}}</td>\r",
+							"        <td>{{status.status}}</td>\r",
+							"        <td>{{type.type}}</td>\r",
+							"    </tr>\r",
+							"    {{/each}}\r",
+							"</table>\r",
+							"`;\r",
+							"\r",
+							"pm.visualizer.set(template, {\r",
+							"    response: pm.response.json()\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"user\": {\r\n        \"userId\": 5,\r\n        \"username\": \"anotheruser\",\r\n        \"password\": \"1PASS2word3\",\r\n        \"firstName\": \"Ann\",\r\n        \"lastName\": \"Other\",\r\n        \"email\": \"ann.other@yahoo.com\",\r\n        \"role\": {\r\n            \"roleId\": 3,\r\n            \"role\": \"Standard\"\r\n        }\r\n    },\r\n    \"account\": {\r\n        \"accountId\": 6,\r\n        \"balance\": 2600.0,\r\n        \"status\": {\r\n            \"statusId\": 1,\r\n            \"status\": \"Pending\"\r\n        },\r\n        \"type\": {\r\n            \"typeId\": 1,\r\n            \"type\": \"Checking\"\r\n        }\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/rocp-project/accounts/owner/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"rocp-project",
+						"accounts",
+						"owner",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE User",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/rocp-project/users/3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"rocp-project",
+						"users",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE Account",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/rocp-project/accounts/3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"rocp-project",
+						"accounts",
+						"3"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

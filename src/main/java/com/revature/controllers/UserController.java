@@ -81,7 +81,8 @@ public class UserController {
 					res.getWriter().println(json);
 				} else {
 					res.setStatus(400);
-					res.getWriter().println("Unable to register user.\nCheck that username or email does not already exist.");
+					res.getWriter()
+							.println("Unable to register user.\nCheck that username or email does not already exist.");
 				}
 			} else if (currentUser.getRole().equals(adminRole) || currentUser.equals(u)) {
 				if (us.updateUser(req, res, u)) {
@@ -98,6 +99,36 @@ public class UserController {
 				res.getWriter().println("You do not have permission to do that.");
 			}
 		}
+	}
+
+	public void handleDelete(HttpServletRequest req, HttpServletResponse res, String[] portions) throws IOException {
+		HttpSession ses = req.getSession(false);
+		User currentUser = (User) ses.getAttribute("user");
+		if (currentUser.getRole().equals(adminRole)) {
+			if (portions.length == 2) {
+				int id = Integer.parseInt(portions[1]);
+				User user = us.getUserById(id);
+				if (user != null) {
+					if (us.deleteUser(user)) {
+						res.setStatus(200);
+						res.getWriter().println("User Deleted");
+					} else {
+						res.setStatus(400);
+						res.getWriter().println("User not deleted.");
+					}
+				} else {
+					res.setStatus(404);
+					res.getWriter().println("User does not exist.");
+				}
+			} else {
+				res.setStatus(400);
+				res.getWriter().println("Please specify a user to delete.");
+			}
+		} else {
+			res.setStatus(401);
+			res.getWriter().println("You do not have permission to perform that operation.");
+		}
+
 	}
 
 	private static User getUserFromBody(HttpServletRequest req) throws IOException {

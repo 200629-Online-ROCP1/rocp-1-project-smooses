@@ -229,6 +229,9 @@ public class UserDAOImpl implements UserDAO {
 		
 			int row = statement.executeUpdate();
 			System.out.println("Row(s) Deleted: " + row);
+			if (row > 0) {
+				return true;
+			}
 		}
 		catch (SQLException e) {
 			System.out.println(e);

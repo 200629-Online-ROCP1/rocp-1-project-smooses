@@ -8,7 +8,7 @@ import com.revature.models.AccountType;
 import com.revature.models.User;
 
 public interface AccountDAO {
-
+	
 	public boolean insertAccount(Account account);
 	public boolean updateAccount(Account account);
 	public boolean deposit(Account account, double amt);
@@ -23,6 +23,8 @@ public interface AccountDAO {
 	public AccountType getAccountType(Account account);
 	public User getAccountOwner(Account account);
 	public Set<User> getAccountOwners(Account account);
+	public boolean accrueInterest();
 	public int getNewestAccountID();
+	public boolean deleteAccount(Account account);
 	
 }

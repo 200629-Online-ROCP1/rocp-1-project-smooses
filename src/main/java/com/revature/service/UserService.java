@@ -36,6 +36,10 @@ public class UserService {
 	}
 	
 	public boolean updateUser(HttpServletRequest req, HttpServletResponse res, User user) {
-			return dao.updateUser(user);
+		return dao.updateUser(user);
+	}
+
+	public boolean deleteUser(User user) {
+		return dao.deleteUser(user);
 	}
 }

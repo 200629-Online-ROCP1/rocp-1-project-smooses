@@ -14,6 +14,8 @@ import com.revature.models.User;
 import com.revature.util.ConnectionUtil;
 
 public class AccountDAOImpl implements AccountDAO {
+	
+	private static final double INTEREST_RATE = .025;
 
 	// Singleton Design
 	private static AccountDAOImpl repo = new AccountDAOImpl();
@@ -300,7 +302,28 @@ public class AccountDAOImpl implements AccountDAO {
 		}
 		return null;
 	}
+	
+	@Override
+	public boolean accrueInterest() {
+		try (Connection conn = ConnectionUtil.getConnection()) {
+			String sql = "UPDATE accounts SET balance = balance + balance * ? WHERE account_type = 2 AND status = 2;";
 
+			PreparedStatement statement = conn.prepareStatement(sql);
+			statement.setDouble(1, INTEREST_RATE);
+
+			int row = statement.executeUpdate();
+			System.out.println("Row(s) Updated: " + row);
+			if (row > 0) {
+				return true;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
+
+	}
+	
+	@Override
 	public int getNewestAccountID() {
 		int accountId = -1;
 		try (Connection conn = ConnectionUtil.getConnection()) {
@@ -316,6 +339,26 @@ public class AccountDAOImpl implements AccountDAO {
 			System.out.println(e);
 		}
 		return accountId;
+	}
+	
+	@Override
+	public boolean deleteAccount(Account account) {
+		try(Connection conn = ConnectionUtil.getConnection()){
+			String sql = "DELETE FROM accounts WHERE account_id=?";
+		
+			PreparedStatement statement = conn.prepareStatement(sql);
+			statement.setInt(1, account.getAccountId());
+		
+			int row = statement.executeUpdate();
+			System.out.println("Row(s) Deleted: " + row);
+			if (row > 0) {
+				return true;
+			}
+		}
+		catch (SQLException e) {
+			System.out.println(e);
+		}
+	return false;
 	}
 
 }

@@ -39,8 +39,8 @@ CREATE TABLE accounts
 );
 
 CREATE TABLE user_accounts
-(	account_id integer REFERENCES accounts(account_id),
-	user_id integer REFERENCES users(user_id),
+(	account_id integer REFERENCES accounts(account_id) ON DELETE CASCADE,
+	user_id integer REFERENCES users(user_id) ON DELETE CASCADE,
 	primary_user boolean DEFAULT TRUE,
 	PRIMARY KEY (account_id, user_id)
 );

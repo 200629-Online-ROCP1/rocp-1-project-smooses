@@ -46,6 +46,7 @@ public class UserAccountDAOImpl implements UserAccountDAO{
 		return false;
 	}
 
+
 	@Override
 	public boolean isPrimaryUser(Account account, User user) {
 		boolean primary = false;
